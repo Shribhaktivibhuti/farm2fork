@@ -1,0 +1,353 @@
+{
+  "info": {
+    "name": "FARM2FORK API",
+    "description": "Complete API collection for FARM2FORK AI-Powered Traceability Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "farmer_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "batch_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "qr_id",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('auth_token', jsonData.token);",
+                  "    pm.collectionVariables.set('farmer_id', jsonData.farmer_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"1234567890\",\n  \"otp\": \"0000\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Farmer Operations",
+      "item": [
+        {
+          "name": "Create Batch",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('batch_id', jsonData.batch_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"crop_name\": \"Tomato\",\n  \"crop_variety\": \"Cherry\",\n  \"farming_method\": \"organic\",\n  \"harvest_date\": \"2024-03-01\",\n  \"treatments\": [],\n  \"crop_image_urls\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/batch/create",
+              "host": ["{{base_url}}"],
+              "path": ["api", "batch", "create"]
+            }
+          }
+        },
+        {
+          "name": "Get Farmer Batches",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/farmer/batches",
+              "host": ["{{base_url}}"],
+              "path": ["api", "farmer", "batches"]
+            }
+          }
+        },
+        {
+          "name": "Generate QR Code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('qr_id', jsonData.qr_id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/qr/generate?batch_id={{batch_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "qr", "generate"],
+              "query": [
+                {
+                  "key": "batch_id",
+                  "value": "{{batch_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "AWS Integration",
+      "item": [
+        {
+          "name": "Get Presigned URL",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/upload/presigned-url?file_type=pesticide",
+              "host": ["{{base_url}}"],
+              "path": ["api", "upload", "presigned-url"],
+              "query": [
+                {
+                  "key": "file_type",
+                  "value": "pesticide"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Extract Pesticide Info",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"s3_url\": \"https://farm2fork-images.s3.us-east-1.amazonaws.com/pesticide/test.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/extract/pesticide",
+              "host": ["{{base_url}}"],
+              "path": ["api", "extract", "pesticide"]
+            }
+          }
+        },
+        {
+          "name": "Extract Fertilizer Info",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"s3_url\": \"https://farm2fork-images.s3.us-east-1.amazonaws.com/fertilizer/test.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/extract/fertilizer",
+              "host": ["{{base_url}}"],
+              "path": ["api", "extract", "fertilizer"]
+            }
+          }
+        },
+        {
+          "name": "AI Analysis",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{auth_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/batch/analyze?batch_id={{batch_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "batch", "analyze"],
+              "query": [
+                {
+                  "key": "batch_id",
+                  "value": "{{batch_id}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Consumer Operations",
+      "item": [
+        {
+          "name": "Verify QR Code",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/public/verify/{{qr_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "public", "verify", "{{qr_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Translate Verification (Hindi)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/public/translate?qr_id={{qr_id}}&target_language=hi",
+              "host": ["{{base_url}}"],
+              "path": ["api", "public", "translate"],
+              "query": [
+                {
+                  "key": "qr_id",
+                  "value": "{{qr_id}}"
+                },
+                {
+                  "key": "target_language",
+                  "value": "hi"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Utility",
+      "item": [
+        {
+          "name": "Get Crops List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/crops",
+              "host": ["{{base_url}}"],
+              "path": ["api", "crops"]
+            }
+          }
+        },
+        {
+          "name": "Get Languages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/languages",
+              "host": ["{{base_url}}"],
+              "path": ["api", "languages"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

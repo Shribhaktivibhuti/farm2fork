@@ -1,0 +1,100 @@
+[
+  {
+    "name": "Tomato",
+    "varieties": [
+      "Cherry Tomato",
+      "Hybrid Tomato",
+      "Roma Tomato",
+      "Desi Tomato",
+      "Beefsteak Tomato",
+      "Grape Tomato"
+    ]
+  },
+  {
+    "name": "Rice",
+    "varieties": [
+      "Basmati",
+      "Sona Masuri",
+      "IR64",
+      "Jasmine Rice",
+      "Brown Rice",
+      "Ponni Rice"
+    ]
+  },
+  {
+    "name": "Wheat",
+    "varieties": [
+      "Durum Wheat",
+      "Hard Red Wheat",
+      "Soft White Wheat",
+      "Emmer Wheat",
+      "Spelt Wheat"
+    ]
+  },
+  {
+    "name": "Potato",
+    "varieties": [
+      "Russet Potato",
+      "Red Potato",
+      "Yukon Gold",
+      "Fingerling Potato",
+      "Purple Potato"
+    ]
+  },
+  {
+    "name": "Onion",
+    "varieties": [
+      "Red Onion",
+      "White Onion",
+      "Yellow Onion",
+      "Sweet Onion",
+      "Spring Onion"
+    ]
+  },
+  {
+    "name": "Carrot",
+    "varieties": [
+      "Nantes Carrot",
+      "Imperator Carrot",
+      "Chantenay Carrot",
+      "Baby Carrot",
+      "Purple Carrot"
+    ]
+  },
+  {
+    "name": "Cabbage",
+    "varieties": [
+      "Green Cabbage",
+      "Red Cabbage",
+      "Savoy Cabbage",
+      "Napa Cabbage"
+    ]
+  },
+  {
+    "name": "Cauliflower",
+    "varieties": [
+      "White Cauliflower",
+      "Purple Cauliflower",
+      "Green Cauliflower",
+      "Orange Cauliflower"
+    ]
+  },
+  {
+    "name": "Spinach",
+    "varieties": [
+      "Savoy Spinach",
+      "Flat Leaf Spinach",
+      "Semi-Savoy Spinach",
+      "Baby Spinach"
+    ]
+  },
+  {
+    "name": "Brinjal",
+    "varieties": [
+      "Purple Brinjal",
+      "Green Brinjal",
+      "White Brinjal",
+      "Striped Brinjal"
+    ]
+  }
+]
